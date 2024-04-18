@@ -16,12 +16,10 @@ exports.Signup = async (req, res) => {
 
     // Validate password format
     if (!passwordRegex.test(password)) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Password must be at least 6 characters long and contains at least 1 special character, 1 uppercase letter, and 1 numeric digit",
-        });
+      return res.status(400).json({
+        message:
+          "Password must be at least 6 characters long and contains at least 1 special character, 1 uppercase letter, and 1 numeric digit",
+      });
     }
     const exisingUser = await User.findOne({ email });
     if (!exisingUser) {
@@ -65,3 +63,77 @@ exports.logout = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+exports.updateUserDetails = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const validateUser = await User.findById(userId);
+  
+    const { username, email, password } = req.body;
+
+    // Check if at least one field is provided for update
+    if (!username && !email && !password) {
+      return res.status(400).json({
+        message: "At least one field (username, email, password) must be provided for update",
+      });
+    }
+
+    const updatedFields = {};
+
+    if (username) {
+      updatedFields.username = username;
+    }
+
+    if (email) {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: "Invalid email format" });
+      }
+      updatedFields.email = email;
+    }
+
+    if (password) {
+      // Validate password format
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
+      if (!passwordRegex.test(password)) {
+        return res.status(400).json({
+          message:
+            "Password must be at least 6 characters long and contains at least 1 special character, 1 uppercase letter, and 1 numeric digit",
+        });
+      }
+      updatedFields.password = await bcrypt.hash(password, 10);
+    }
+    if(validateUser.email===email || validateUser.password===password || validateUser.username===username){
+      return res.status(400).json({message:"New values must be different from the current ones" });
+    }
+
+    const updatedUserDetails = await User.findByIdAndUpdate(
+      userId,
+      updatedFields,
+      { new: true }
+    );
+
+    res.status(200).json({ message: "User details are updated", updatedUserDetails });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+exports.getAllUsers=async(req,res)=>{
+  try{
+    const users=await User.find({}).select("-password")
+    res.status(200).json({users})
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+exports.getUser=async(req,res)=>{
+  try{
+    const {userId}=req.params
+    const user=await User.findById(userId).select("-password")
+    res.status(200).json({user})
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}

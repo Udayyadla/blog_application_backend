@@ -1,7 +1,11 @@
 const express=require("express")
-const { Signup, login, logout } = require("../controllers/user.controller")
+const { Signup, login, logout, updateUserDetails, getAllUsers, getUser } = require("../controllers/user.controller")
+const { protectedRoute } = require("../middlewares/protectedRoute")
 const router=express.Router()
 router.post("/signup",Signup)
 router.post("/login",login)
 router.post("/logout",logout)
+router.get("/getAllUsers",getAllUsers)
+router.get("/getUser/:userId",getUser)
+router.put("/updateUserdetails",protectedRoute,updateUserDetails)
 module.exports=router

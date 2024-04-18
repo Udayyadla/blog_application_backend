@@ -1,7 +1,6 @@
 const Comment = require("../models/comment.model");
 const Post = require("../models/blog.model");
 const mongoose = require("mongoose");
-const { post } = require("../routes/comment.route");
 
 exports.postComment = async (req, res) => {
   try {

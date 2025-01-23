@@ -61,3 +61,195 @@ To get started with the project, follow these steps:
 - **Development Mode**: (with nodemon for automatic server restarts):
 
   <code>npm run server</code>
+
+## Deployed URL
+Base URL: [https://blog-application-backend-1-tabj.onrender.com](https://blog-application-backend-1-tabj.onrender.com)
+
+---
+
+## API Endpoints
+
+### User Routes (`/api/users`)
+
+- **POST** `/signup`  
+  **Description:** Registers a new user.  
+  **Request Body:**
+  ```json
+  {
+    "username": "string",
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
+- **POST** `/login`  
+  **Description:** Authenticates a user and provides a token.  
+  **Request Body:**
+  ```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
+- **POST** `/logout`  
+  **Description:** Logs out the user.
+
+- **GET** `/getAllUsers`  
+  **Description:** Fetches all users.
+
+- **GET** `/getUser/:userId`  
+  **Description:** Fetches details of a specific user.  
+  **Path Parameters:**
+  - `userId` (string): The ID of the user.
+
+- **PUT** `/updateUserdetails`  
+  **Description:** Updates user details. Requires authentication.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+
+---
+
+### Post Routes (`/api/posts`)
+
+- **POST** `/createpost`  
+  **Description:** Creates a new blog post. Requires authentication.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+  **Request Body:**
+  ```json
+  {
+    "title": "string",
+    "content": "string"
+  }
+  ```
+
+- **GET** `/getAllPosts`  
+  **Description:** Fetches all blog posts. Requires authentication.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+
+- **PUT** `/updatePost/:postId`  
+  **Description:** Updates a specific blog post by ID. Requires authentication.  
+  **Path Parameters:**
+  - `postId` (string): The ID of the post.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+  **Request Body:**
+  ```json
+  {
+    "title": "string",
+    "content": "string"
+  }
+  ```
+
+- **DELETE** `/deletePost/:postId`  
+  **Description:** Deletes a specific blog post by ID. Requires authentication.  
+  **Path Parameters:**
+  - `postId` (string): The ID of the post.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+
+---
+
+### Comment Routes (`/api/comments`)
+
+- **POST** `/postComment/:postId`  
+  **Description:** Posts a comment on a specific post. Requires authentication.  
+  **Path Parameters:**
+  - `postId` (string): The ID of the post.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```  
+  **Request Body:**
+  ```json
+  {
+    "comment": "string"
+  }
+  ```
+
+- **GET** `/getAllComments`  
+  **Description:** Fetches all comments. Requires authentication.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+
+- **GET** `/getComment/:commentId`  
+  **Description:** Fetches a specific comment by ID. Requires authentication.  
+  **Path Parameters:**
+  - `commentId` (string): The ID of the comment.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+
+- **PUT** `/updateComment/:commentId`  
+  **Description:** Updates a specific comment by ID. Requires authentication.  
+  **Path Parameters:**
+  - `commentId` (string): The ID of the comment.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```  
+  **Request Body:**
+  ```json
+  {
+    "comment": "string"
+  }
+  ```
+
+- **DELETE** `/deleteComment/:commentId`  
+  **Description:** Deletes a specific comment by ID. Requires authentication.  
+  **Path Parameters:**
+  - `commentId` (string): The ID of the comment.  
+  **Headers:**
+  ```json
+  {
+    "Authorization": "Bearer <token>"
+  }
+  ```
+
+---
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- MongoDB
+- JSON Web Tokens (JWT) for authentication
+
+---
+
+
+
+
